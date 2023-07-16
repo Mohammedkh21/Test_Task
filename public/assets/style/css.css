@@ -386,8 +386,8 @@ input[type='radio']:checked::after {
         letter-spacing: 0rem;
     }
     .footer .icons img{
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1.25rem;
+        height: 1.25rem;
     }
     .supplier-card .counct{
         font-size: 1rem;

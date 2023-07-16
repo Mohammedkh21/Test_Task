@@ -66,30 +66,30 @@
                             <div>
                                 <p>عرض السعر</p>
                             </div>
-                            <div class="form-input d-flex justify-content-end">
-                                <div  class=" file-log h-100 w-75  ">
-                                    <div class="input-file-log  d-flex justify-content-end ps-2 ">
+                            <div class="form-input d-flex justify-content-end ">
+                                <div class="file-log  h-100 w-75  align-items-center">
+                                    <div class="input-file-log  d-flex justify-content-end ps-2 pe-2 ">
                                         <div class="d-flex align-items-center text-start">
                                             <div>
-                                                <p class="font-size-10-px input-file-log-name">file name.pdf</p>
-                                                <p class="font-size-10-px input-file-log-size">2.45 MB</p>
+                                                <p class="font-size-10-px file_name">file name.pdf</p>
+                                                <p class="font-size-10-px file_size">2.45 MB</p>
                                             </div>
                                         </div>
-                                        <div class="d-flex align-items-center pe-1">
-                                            <img src="{{ asset('./assets/img/pdf.png') }}" alt="">
+                                        <div class="d-flex align-items-center  pe-1">
+                                            <img class="img-32-32" src="{{ asset('./assets/img/pdf.png') }}" alt="">
                                         </div>
                                         <div>
-                                            <i class="fa-solid fa-xmark remove-file"></i>
+                                            <i class="fa-solid fa-xmark  remove-singel_file"></i>
                                         </div>
                                     </div>
                                 </div>
-                                <label class="upload_file" for="file">
-                                    <img class="img-fluid " src="{{ asset('./assets/img/material-symbols_upload-rounded.png') }}"  alt="">
-                                    <p class="d-inline text-white m-0 me-1">تحميل الملف</p>
+                                <label for="price">
+                                    <img class="img-fluid img-upload-file" src=" {{ asset('./assets/img/material-symbols_upload-rounded.png') }} " alt="">
+                                    <p class="d-inline text-white m-0 me-1 ">تحميل الملف</p>
                                 </label>
-                                <input name="price" accept=".pdf" id="file" class="d-none price price-file"  type="file">
+                                <input class="singel_file  d-none  " id="price" name="price" type="file">
                             </div>
-                            <div class="error error_price" >
+                            <div class="error error_last_tax" >
                             </div>
                             <div class="note  mt-3">
                                 <img class="img-fluid  img-24-24" src="{{ asset('./assets/img/info-2.png') }}" alt="">
@@ -278,26 +278,28 @@
         })
 
         $('.file-log').css("display", "none");
-        $('.price').change(function () {
+        $('.singel_file').change(function () {
             var file =  this.files[0];
-            $('.input-file-log-name').text(file.name.substr(0, 5)+'...'+file.name.substr(-8))
-            $('.input-file-log-size').text((file.size / 1000000).toFixed(2) +' MB' )
-            $('.file-log').show();
-            $('.upload_file').hide();
-            $('.file-log').parents('div').first()
-                .removeClass('justify-content-end')
+            var parent = $(this).parent('div').first();
+            parent.find('.file_name').text(file.name.substr(0, 5)+'...'+file.name.substr(-8))
+            parent.find('.file_size').text((file.size / 1000000).toFixed(2) +' MB' )
+            parent.find('.file-log').css("display", "flex");
+            parent.find('label').hide();
+            parent.removeClass('justify-content-end')
                 .addClass('justify-content-start')
                 .css('background-color','#FFFFFF');
-        })
-        $('.remove-file').click(function (){
-            $('.upload_file').show();
-            $('.file-log').hide();
-            $('.file-log').parents('div').first()
+        });
+        $('.remove-singel_file').click(function (){
+            var file_log = $(this).closest('.file-log');
+
+            file_log.hide();
+            file_log.parent()
                 .addClass('justify-content-end')
                 .removeClass('justify-content-start')
-                .css('background-color','#F1F1F1');
-
-            $(".price-file").val(null);
+                .css('background-color','#F1F1F1')
+                .find('label')
+                .show();
+            file_log.find('input').val(null);
         });
 
         $(document).on('click', '#submit', function (e) {

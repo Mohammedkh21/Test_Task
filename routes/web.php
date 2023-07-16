@@ -18,10 +18,6 @@ use App\Http\Controllers;
 |
 */
 Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function (){
-    Route::get('d',function (){
-        $project = \App\Models\Project::find(2);
-        return   $project->document()->create();
-    });
 
     Route::get('projects/create',MainController::class)->name('project');
     Route::middleware('project_status')->group(function (){
@@ -44,15 +40,6 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
 
 
 
-
-Route::post('tt', function (\Illuminate\Http\Request $request) {
-    info($request->all());
-    return response()->json('',200);
-})->name('tt');
-Route::get('a', function () {
-    $f= \App\Models\File::where('type','bank_statements')->get();
-    return $f->delete();
-});
 
 
 Route::get('/', function () {
