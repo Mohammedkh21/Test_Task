@@ -12,6 +12,7 @@ class File extends Model
     protected $fillable =[
         'path',
         'type',
+        'name',
         'created_at',
         'updated_at'
     ];

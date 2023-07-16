@@ -29,8 +29,17 @@ class DocumentRequest extends FormRequest
             'financial_statements'=>'nullable|array',
             'financial_statements.*'=>'file|mimes:pdf|max:10000000',
             'supporting_documents'=>'nullable|array',
-            'supporting_documents.*'=>'file|mimes:pdf|max:10000000',
+            'supporting_documents.*'=>'file|mimes:pdf|max:10',
 
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => 'هذا الحقل مطلوب',
+            'mimes'=>'هذا الحقل يجب ان يكون من صيغة pdf',
+            'max'=>' يجب ان لا يتجاوز حجم الملف :max كيلوبيت  ',
         ];
     }
 }

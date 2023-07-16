@@ -33,4 +33,14 @@ class FinanceRequest extends FormRequest
 
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'required' => 'هذا الحقل مطلوب',
+            'integer' => 'يجب ان تكون القيمة رقم',
+            'url'=>'يجب ان يكون المدخل عنوان موقع الكتروني',
+            'boolean'=>'يجب ان يكون المدخل اما نعم او لا'
+        ];
+    }
 }

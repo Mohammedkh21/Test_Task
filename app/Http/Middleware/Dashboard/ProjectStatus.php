@@ -29,17 +29,17 @@ class ProjectStatus
             $action = $project->purchase ? 'edit' : 'create';
             return redirect()->route("dashboard.projects.purchase.$action",['project'=>$project]);
         }elseif($type == 'finance'){
-//            if(! $project->purchase){
-//                $route = route("dashboard.projects.purchase.create",['project'=>$project]);
-//            }
+            if(! $project->purchase){
+                return redirect()->route("dashboard.projects.purchase.create",['project'=>$project]);
+            }
             $action = $project->finance ? 'edit' : 'create';
             return redirect()->route("dashboard.projects.finance.$action",['project'=>$project]);
         }elseif($type == 'document'){
-//            if(! $project->purchase){
-//                $route = route("dashboard.projects.purchase.create",['project'=>$project]);
-//            }elseif(! $project->finance){
-//                $route = route("dashboard.projects.finance.create",['project'=>$project]);
-//            }
+            if(! $project->purchase){
+                return redirect()->route("dashboard.projects.purchase.create",['project'=>$project]);
+            }elseif(! $project->finance){
+                return redirect()->route("dashboard.projects.finance.create",['project'=>$project]);
+            }
             $action = $project->document ? 'edit' : 'create';
             return redirect()->route("dashboard.projects.document.$action",['project'=>$project]);
         }

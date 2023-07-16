@@ -209,7 +209,7 @@
 
 
                         <div class="d-flex justify-content-center mt-5" >
-                            <a href="#" class="text-decoration-none p-2 col-4 d-flex justify-content-center align-items-center" >
+                            <a href="{{  route("dashboard.projects.finance.edit",['project'=>$project])  }}" class="text-decoration-none p-2 col-4 d-flex justify-content-center align-items-center" >
                                 <div class=" ms-3">
                                     <i class="fa-solid fa-chevron-down text-black d-flex justify-content-center "
                                        style="transform: rotate(-90deg);"  ></i>
@@ -365,7 +365,7 @@
             formData.append('last_tax',last_tax)
             $('#terms').is(":checked") ? formData.append('terms',$('#terms').val()) : '';
             $.ajax({
-                type : method  ,
+                type : 'post'  ,
                 enctype: 'multipart/form-data',
                 url:   "{{ route('dashboard.projects.document.store',['project'=>$project]) }}",
                 data: formData ,
@@ -384,10 +384,10 @@
                         console.log(err)
                         if (errors.hasOwnProperty(err)) {
                             if(err.split('.')[1] != null){
-                                // (errors[err]).forEach(message=>{
-                                //     $('.'+err.split('.')[0]+'_files').find('.error').eq(err.split('.')[1])
-                                //         .append('<small class="text-danger">'+message+'</small>')
-                                // })
+                                (errors[err]).forEach(message=>{
+                                    $('.'+err.split('.')[0]+'_files').find('.error').eq(err.split('.')[1])
+                                        .append('<small class="text-danger">'+message+'</small>')
+                                })
                             }else{
                                 (errors[err]).forEach(message=>{
                                     $('.error_'+err).append('<small class=" d-block text-danger">'+message+'</small>')

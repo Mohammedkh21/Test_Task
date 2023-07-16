@@ -50,7 +50,8 @@ Route::post('tt', function (\Illuminate\Http\Request $request) {
     return response()->json('',200);
 })->name('tt');
 Route::get('a', function () {
-    return \App\Models\Project::first()->document()->create();
+    $f= \App\Models\File::where('type','bank_statements')->get();
+    return $f->delete();
 });
 
 

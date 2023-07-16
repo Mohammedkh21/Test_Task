@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
+use App\Models\File;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
@@ -24,27 +26,18 @@ class DocumentController extends Controller
      */
     public function store(DocumentRequest $request,Project $project)
     {
-        info($request->all());
         $document = $project->document()->create();
-        $file_path = $request->file('last_tax')->store('documents/last_tax','public');
-        $document->file()->create(['path'=>$file_path,'type'=>'last_tax']);
-        foreach ($request->file('bank_statements') as $file){
-             $file_path = $file->store('documents/bank_statements','public');
-             $document->file()->create(['path'=>$file_path,'type'=>'bank_statements']);
-        }
-        if ($request->file('financial_statements')){
-            foreach ($request->file('financial_statements') as $file){
-                $file_path = $file->store('documents/financial_statements','public');
-                $document->file()->create(['path'=>$file_path,'type'=>'financial_statements']);
+        foreach ($request->file() as $name => $files){
+            if(is_array($files)){
+                foreach ($files as $file){
+                    $file_path = $file->store('documents/'.$name,'public');
+                    $document->file()->create(['path'=>$file_path,'type'=>$name,'name'=>$file->getClientOriginalName()]);
+                }
+            }else{
+                $file_path = $files->store('documents/'.$name,'public');
+                $document->file()->create(['path'=>$file_path,'type'=>$name,'name'=>$files->getClientOriginalName()]);
             }
         }
-        if ($request->file('supporting_documents')){
-            foreach ($request->file('supporting_documents') as $file){
-                $file_path = $file->store('documents/supporting_documents','public');
-                $document->file()->create(['path'=>$file_path,'type'=>'supporting_documents']);
-            }
-        }
-
         $project->completed = true;
         $project->save();
         return response()->json(['status'=>true],200);
@@ -70,9 +63,24 @@ class DocumentController extends Controller
     /**
      * Update the resource in storage.
      */
-    public function update(Request $request,Project $project)
+    public function update(DocumentRequest $request,Project $project)
     {
-        $project->document()->update($request->except(['_token','_method','type']));
+        $document = $project->document;
+        $document->update($request->except(['_token','_method','type']));
+        foreach ($request->file() as $name => $files){
+            $docFiles = $document->file()->where('type',$name)->get();
+            Storage::disk('public')->delete($docFiles->pluck('path'));
+            File::whereIn('id',$docFiles->pluck('id'))->delete();
+            if(is_array($files)){
+                foreach ($files as $file){
+                    $file_path = $file->store('documents/'.$name,'public');
+                    $document->file()->create(['path'=>$file_path,'type'=>$name,'name'=>$file->getClientOriginalName()]);
+                }
+            }else{
+                $file_path = $files->store('documents/'.$name,'public');
+                $document->file()->create(['path'=>$file_path,'type'=>$name,'name'=>$files->getClientOriginalName()]);
+            }
+        }
         return response()->json(['status'=>true],200);
     }
 
