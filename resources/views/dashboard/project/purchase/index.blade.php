@@ -254,7 +254,7 @@
     <script >
         const suppliers = {!! json_encode( $suppliers ) !!};
         $('.supplier-card').hide();
-        $('.file-log').css("display", "none");
+
 
 
         $('.supplier_select').change(function () {
@@ -277,6 +277,7 @@
             }
         })
 
+        $('.file-log').css("display", "none");
         $('.price').change(function () {
             var file =  this.files[0];
             $('.input-file-log-name').text(file.name.substr(0, 5)+'...'+file.name.substr(-8))

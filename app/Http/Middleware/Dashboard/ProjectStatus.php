@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProjectStatus
 {
+
     /**
      * Handle an incoming request.
      *
@@ -20,31 +21,36 @@ class ProjectStatus
             return $next($request);
         }
         $route_path = explode('/',$request->getPathInfo());
-        $project = isset($request->project->user_id) ? $request->project : Project::find($request->project);
-
+        $project = $request->route('project');
         $type =  $route_path[count($route_path)-2];
         \request()->session()->flash('WithoutMiddleware',true);
         $route = '';
+
         if ($type == 'purchase' ){
             $action = $project->purchase ? 'edit' : 'create';
-            return redirect()->route("dashboard.projects.purchase.$action",['project'=>$project]);
+            $route = 'purchase.'.$action;
+
         }elseif($type == 'finance'){
             if(! $project->purchase){
-                return redirect()->route("dashboard.projects.purchase.create",['project'=>$project]);
+                $route = 'purchase.create';
             }
             $action = $project->finance ? 'edit' : 'create';
-            return redirect()->route("dashboard.projects.finance.$action",['project'=>$project]);
+            $route =  $route ?? 'finance.'.$action;
+
         }elseif($type == 'document'){
             if(! $project->purchase){
-                return redirect()->route("dashboard.projects.purchase.create",['project'=>$project]);
+                $route = 'purchase.create';
             }elseif(! $project->finance){
-                return redirect()->route("dashboard.projects.finance.create",['project'=>$project]);
+                $route = 'finance.create';
             }
             $action = $project->document ? 'edit' : 'create';
-            return redirect()->route("dashboard.projects.document.$action",['project'=>$project]);
+            $route =  $route ?? 'document.'.$action;
+
         }
 
-
-        return  $next($request);
+        return  $route ?
+            redirect()->route("dashboard.projects.$route",['project'=>$project])
+            :
+            $next($request);
     }
 }

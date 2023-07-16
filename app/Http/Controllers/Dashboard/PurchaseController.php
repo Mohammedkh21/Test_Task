@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseRequest;
+use App\Models\File;
 use App\Models\Project;
 use App\Models\Purchase;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PurchaseController extends Controller
 {
@@ -29,7 +31,7 @@ class PurchaseController extends Controller
     {
         $file_path = $request->file('price')->store('purchase/files','public');
         $purchase = $project->purchase()->create($request->except('price'));
-        $purchase->file()->create(['path'=>$file_path]);
+        $purchase->file()->create(['path'=>$file_path,'name'=>$request->file('price')->getClientOriginalName()]);
         return response()->json(['status'=>true],200);
     }
 
@@ -56,6 +58,10 @@ class PurchaseController extends Controller
      */
     public function update(PurchaseRequest $request, Project $project)
     {
+        $purchase = $project->purchase;
+        Storage::disk('public')->delete($purchase->file->path);
+        $file_path = $request->file('price')->store('purchase/files','public');
+        $purchase->file()->update(['path'=>$file_path,'name'=>$request->file('price')->getClientOriginalName()]);
         $project->purchase()->update($request->except(['price','_token','_method']));
         return response()->json(['status'=>true],200);
     }
