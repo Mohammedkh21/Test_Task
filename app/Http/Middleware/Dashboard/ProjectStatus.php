@@ -23,8 +23,7 @@ class ProjectStatus
         $route_path = explode('/',$request->getPathInfo());
         $project = $request->route('project');
         $type =  $route_path[count($route_path)-2];
-        \request()->session()->flash('WithoutMiddleware',true);
-        $route = '';
+        $route = null;
 
         if ($type == 'purchase' ){
             $action = $project->purchase ? 'edit' : 'create';
@@ -48,9 +47,14 @@ class ProjectStatus
 
         }
 
-        return  $route ?
-            redirect()->route("dashboard.projects.$route",['project'=>$project])
-            :
-            $next($request);
+        if($route)
+        {
+            \request()->session()->flash('WithoutMiddleware',true);
+            return  redirect()->route("dashboard.projects.$route",['project'=>$project]);
+        }
+
+
+        return $next($request);
     }
+
 }

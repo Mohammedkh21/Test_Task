@@ -302,6 +302,7 @@
             file_log.find('input').val(null);
         });
 
+
         $(document).on('click', '#submit', function (e) {
             var formData = new FormData($('#PurchaseForm')[0]);
             $(".error").empty();
