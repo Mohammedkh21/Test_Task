@@ -89,7 +89,7 @@
                                 </label>
                                 <input class="singel_file  d-none  " id="price" name="price" type="file">
                             </div>
-                            <div class="error error_last_tax" >
+                            <div class="error error_price" >
                             </div>
                             <div class="note  mt-3">
                                 <img class="img-fluid  img-24-24" src="{{ asset('./assets/img/info-2.png') }}" alt="">

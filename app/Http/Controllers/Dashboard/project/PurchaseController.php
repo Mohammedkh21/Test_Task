@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Dashboard\project;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseRequest;
-use App\Models\File;
 use App\Models\Project;
 use App\Models\Purchase;
 use App\Models\Supplier;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class PurchaseController extends Controller
+class PurchaseController extends MainController
 {
 
     /**

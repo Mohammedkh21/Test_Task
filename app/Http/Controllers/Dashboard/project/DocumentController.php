@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Dashboard\project;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DocumentRequest;
-use App\Models\Document;
 use App\Models\File;
 use App\Models\Project;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class DocumentController extends Controller
+class DocumentController extends MainController
 {
     /**
      * Show the form for creating the resource.

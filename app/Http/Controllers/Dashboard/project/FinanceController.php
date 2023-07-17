@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Dashboard\project;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FinanceRequest;
-use App\Models\Finance;
 use App\Models\Project;
-use Illuminate\Http\Request;
 
-class FinanceController extends Controller
+class FinanceController extends MainController
 {
     /**
      * Show the form for creating the resource.

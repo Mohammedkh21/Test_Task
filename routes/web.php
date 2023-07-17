@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Models\Supplier;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Dashboard\MainController;
 use App\Http\Controllers;
+use App\Http\Controllers\Dashboard\project\MainController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 
 
 /*
@@ -20,10 +19,10 @@ use App\Http\Controllers;
 Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function (){
 
     Route::get('projects/create',MainController::class)->name('project');
-    Route::middleware('project_status')->group(function (){
-        Route::singleton('projects.purchase',Controllers\Dashboard\PurchaseController::class)->creatable();
-        Route::singleton('projects.finance',Controllers\Dashboard\FinanceController::class)->creatable();
-        Route::singleton('projects.document',Controllers\Dashboard\DocumentController::class)->creatable();
+    Route::group([],function (){
+        Route::singleton('projects.purchase', Controllers\Dashboard\project\PurchaseController::class)->creatable();
+        Route::singleton('projects.finance', Controllers\Dashboard\project\FinanceController::class)->creatable();
+        Route::singleton('projects.document', Controllers\Dashboard\project\DocumentController::class)->creatable();
 
     });
 });

@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Dashboard\project;
 
 use App\Http\Controllers\Controller;
-use App\Models\Project;
-use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
+    public function __construct(){
+        $this->middleware('project_status', ['only' => ['create', 'edit']]);
+    }
     public function __invoke()
     {
         $project = auth()->user()->projects()->where('completed',false)->first();
