@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function (){
 
+    Route::get('coin/exchange/{from}/{to}/{amount}',Controllers\Dashboard\CoinExchangeController::class);
+
     Route::get('projects/create',MainController::class)->name('project');
     Route::group([],function (){
         Route::singleton('projects.purchase', Controllers\Dashboard\project\PurchaseController::class)->creatable();
