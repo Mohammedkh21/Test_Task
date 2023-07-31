@@ -1,250 +1,254 @@
 @extends('dashboard.layouts.app')
 
 @section('content')
-    <div class="" >
-        <div class="d-flex justify-content-center">
-            <div class="col-lg-10 col-12 pt-5">
-                <h1 class="text-green font-size-28-px">المشتريات</h1>
-                <p class="text-black-70"><span class="text-green">المشتريات ></span> إضافة مشروع</p>
+    <div class="content">
+        <div class="content_box" >
+            <div class="status">
+                <div class="status_main">
+                    <p>المشتريات</p>
+                </div>
+                <div class="status_secondary">
+                    <p class="green">المشتريات</p>
+                    <i class="fa-solid fa-chevron-down"></i>
+                    <p>إضافة مشروع</p>
+                </div>
             </div>
-        </div>
-        <div class="d-flex justify-content-center">
-            <div class="col-12 col-sm-10 col-md-8 col-lg-6   pt-5">
-                <div class="text-center">
+            <form id="PurchaseForm" enctype="multipart/form-data">
+                @csrf
+                <div class="cont">
+                <div class="level" >
                     <p>الرجاء إكمال الخطوات التالية</p>
-                </div>
-
-                <div class="d-flex justify-content-between stat position-relative">
-                    <div>
-                        <p class="text-center text-green ">١</p>
-                        <div class="status d-flex justify-content-center align-items-center">
-                            <i class="fa-solid fa-check active  "></i>
+                    <div class="diagram">
+                        <div class="point active">
+                            <div class="number" >١</div>
+                            <div class="icon"><i class="fa-solid fa-check not-active "></i></div>
+                            <div class="name" >معلومات الشراء</div>
                         </div>
-                        <p class="text-center mt-3 text-green font-size-14-px">معلومات الشراء</p>
-                    </div>
-                    <span class="line  line-right "></span>
-                    <div class="">
-                        <p class="text-center">٢</p>
-                        <div class="status d-flex  justify-content-center  align-items-center">
-                            <i class="fa-solid fa-check not-active  "></i>
+                        <span class="line "></span>
+                        <div class="point  ">
+                            <div class="number" >٢</div>
+                            <div class="icon"><i class="fa-solid fa-check not-active "></i></div>
+                            <div class="name" >معلومات مالية</div>
                         </div>
-                        <div>
-                            <p class="text-center  pt-3   font-size-14-px">معلومات مالية</p>
+                        <span class="line"></span>
+                        <div class="point">
+                            <div class="number" >٣</div>
+                            <div class="icon"><i class="fa-solid fa-check not-active "></i></div>
+                            <div class="name" >المستندات</div>
                         </div>
-                    </div>
-                    <span class="line line-left"></span>
-                    <div>
-                        <p class="text-center">٣</p>
-                        <div class="status d-flex  justify-content-center  align-items-center">
-                            <i class="fa-solid fa-check not-active "></i>
-                        </div>
-                        <p class="text-center pt-3   font-size-14-px">المستندات</p>
                     </div>
                 </div>
 
-                <div class="pe-3 ps-3 ">
-                    <div class="d-flex  justify-content-between pt-5 ">
-                        <div class="ms-3">
-                            <p class="text-green font-size-18-px m-0 d-flex align-items-center">معلومات الشراء</p>
+
+                <div class="title">
+                    <p>معلومات الشراء</p>
+                    <span></span>
+                </div>
+                <div class="input_box">
+                    <p>نوع المشتريات</p>
+                    <div  class="input"  >
+                        <input name="type"  value="{{ isset($purchase) ? $purchase->type : '' }}"  type="text" placeholder="نوع المشتريات">
+                    </div>
+                    <div class="error error_type" >
+                    </div>
+                </div>
+
+
+                <div class="input_box">
+                    <p>عرض السعر</p>
+                    <div  class="input singal_file" >
+                        <div class="placehoder uploaded_file">
+                            اختر الملف
+
                         </div>
-                        <span class="title-line flex-grow-1"></span>
+                        <div class="add_file">
+                            <label for="price_file">
+                                <img class="img-fluid " src="{{ asset('assets/img/material-symbols_upload-rounded.png') }}" alt="">
+                                <p >تحميل الملف</p>
+                            </label>
+                            <input name="price" id="price_file" class="upload_single_file" type="file">
+                        </div>
+                    </div>
+                    <div class="error error_price" >
+                    </div>
+                    <div class="info">
+                        <img src="{{ asset('assets/img/info-2.png') }}" alt="">
+                        <p>يجب أن يكون ملفك بصيغة pdf. ولا يزيد حجمه عن 10 ميغابايت</p>
+                    </div>
+                </div>
+
+
+
+                <div class="input_box">
+                    <p>مبلغ المشتريات بالريال السعودي</p>
+                    <div  class="input"  >
+                        <input  name="amount" value="{{  isset($purchase) ? $purchase->amount  : '' }}" type="text" placeholder="مثال: 350,000">
+                    </div>
+                    <div class="error error_amount" >
+                    </div>
+                    <div class="info">
+                        <p>يجب أن يكون ملفك بصيغة pdf. ولا يزيد حجمه عن 10 ميغابايت</p>
+                    </div>
+                </div>
+
+
+                <div class="input_box">
+                    <p>فترة السداد بالأشهر</p>
+                    <div class="select_input">
+                        <select  name="payment_period">
+                            <option>اختر فترة السداد</option>
+                            @for($i=1;$i<=12;$i++)
+                                <option
+                                    @if(( isset($purchase) ? $purchase->payment_period : 0) == $i) selected @endif
+                                    value="{{$i}}">{{$i}}</option>
+                            @endfor
+                        </select>
+                        <div class="position-absolute select_arrow ">
+                            <i class="fa-solid fa-chevron-down  "></i>
+                        </div>
+
+                    </div>
+                    <div class="error error_payment_period" >
                     </div>
 
-                    <form id="PurchaseForm" enctype="multipart/form-data">
-                        @csrf
-                        <div class="pt-4">
-                            <div>
-                                <p>نوع المشتريات</p>
-                            </div>
-                            <div>
-                                <input name="type" value="{{ isset($purchase) ? $purchase->type : '' }}" class="form-input" type="text" placeholder="نوع المشتريات">
-                            </div>
-                            <div class="error error_type" >
-                            </div>
+                    <div class="calc_fee" >
+                        <div class="title">
+                            <p>حاسبة القسط الشهري التقريبية</p>
                         </div>
-                        <div class="pt-4">
-                            <div>
-                                <p>عرض السعر</p>
+                        <div class="row2">
+                            <div class="type">
+                                <p>مبلغ المشتريات</p>
+                                <p>المرابحة</p>
+                                <p>المبلغ الكلي</p>
                             </div>
-                            <div class="form-input d-flex justify-content-end ">
-                                <div class="file-log  h-100 w-75  align-items-center">
-                                    <div class="input-file-log  d-flex justify-content-end ps-2 pe-2 ">
-                                        <div class="d-flex align-items-center text-start">
-                                            <div>
-                                                <p class="font-size-10-px file_name">file name.pdf</p>
-                                                <p class="font-size-10-px file_size">2.45 MB</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center  pe-1">
-                                            <img class="img-32-32" src="{{ asset('./assets/img/pdf.png') }}" alt="">
-                                        </div>
-                                        <div>
-                                            <i class="fa-solid fa-xmark  remove-singel_file"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <label for="price">
-                                    <img class="img-fluid img-upload-file" src=" {{ asset('./assets/img/material-symbols_upload-rounded.png') }} " alt="">
-                                    <p class="d-inline text-white m-0 me-1 ">تحميل الملف</p>
-                                </label>
-                                <input class="singel_file  d-none  " id="price" name="price" type="file">
-                            </div>
-                            <div class="error error_price" >
-                            </div>
-                            <div class="note  mt-3">
-                                <img class="img-fluid  img-24-24" src="{{ asset('./assets/img/info-2.png') }}" alt="">
-                                <p class="m-0 d-inline">يجب أن يكون ملفك بصيغة pdf. ولا يزيد حجمه عن 10 ميغابايت</p>
-                            </div>
-                        </div>
-                        <div class="pt-4">
-                            <div>
-                                <p>مبلغ المشتريات بالريال السعودي</p>
-                            </div>
-                            <div>
-                                <input name="amount" value="{{  isset($purchase) ? $purchase->amount  : '' }}" class="form-input" type="text" placeholder="مثال: 350,000">
-                            </div>
-                            <div class="error error_amount" >
-                            </div>
-                            <div class="note  mt-3">
-                                <p class="m-0 d-inline font-size-14-px">مبلغ المشتريات للمنشأة من 100 ألف ريال سعودي إلى 500 ألف ريال سعودي</p>
-                            </div>
-                        </div>
-                        <div class="pt-4">
-                            <div>
-                                <p>فترة السداد بالأشهر</p>
-                            </div>
-                            <div class="position-relative">
-                                <select name="payment_period" class="form-input "  >
-                                    <option >اختر فترة السداد</option>
-                                    @for($i=1;$i<=12;$i++)
-                                        <option
-                                            @if(( isset($purchase) ? $purchase->payment_period : 0) == $i) selected @endif
-                                        value="{{$i}}">{{$i}}</option>
-                                    @endfor
-
-                                </select>
-                                <div class="error error_payment_period" >
-                                </div>
-                                <div class="position-absolute select-arrow ">
-                                    <i class="fa-solid fa-chevron-down text-black-70 "  ></i>
-                                </div>
+                            <div class="type_price">
+                                <p>0.00 <span>ر.س</span></p>
+                                <span>+</span>
+                                <p>0.00 <span>ر.س</span></p>
+                                <span>=</span>
+                                <p>0.00 <span>ر.س</span></p>
                             </div>
                         </div>
 
-                        <div class="card-info mt-5 p-4">
-                            <div>
-                                <p class="text-green">حاسبة القسط الشهري التقريبية</p>
+                        <div class="row2">
+                            <div class="type">
+                                <p>القسط الشهري</p>
+                                <a href="#">تطبيق الشروط والأحكام</a>
                             </div>
-                            <div class="col-8 d-flex justify-content-between p-0">
-                                <p class="text-white-97">مبلغ المشتريات</p>
-                                <p class="text-white-97">المرابحة</p>
-                                <p class="text-white-97">المبلغ الكلي</p>
-                            </div>
-                            <div class="col-8 d-flex justify-content-between p-0">
-                                <p class="text-green">0.00 <span class="font-size-12-px">ر.س</span></p>
-                                <p class="text-green"><span class="text-white-97 ms-3">+</span>0.00 <span>ر.س</span></p>
-                                <p class="text-green"><span class="text-white-97 ms-3">=</span>0.00 <span>ر.س</span></p>
-                            </div>
-
-                            <div class="mt-3">
-                                <p class="d-inline text-white-97 font-size-14-px ms-3">القسط الشهري</p>
-                                <a class="font-size-12-px text-blue" href="#">تطبيق الشروط والأحكام</a>
-                            </div>
-                            <div class="mt-2">
-                                <p class="text-green font-size-18-px ">0.00 <span class="font-size-12-px">ر.س</span></p>
-                            </div>
-                            <div class="mt-3">
-                                <p class="d-inline text-white-97 font-size-14-px ms-3">الرسوم الإدارية</p>
-                                <a class="font-size-12-px text-blue" href="#">تطبيق الشروط والأحكام</a>
-                            </div>
-                            <div class="mt-2">
-                                <p class="text-green font-size-18-px m-0">0.00 <span class="font-size-12-px">ر.س</span></p>
+                            <div class="type_price">
+                                <p>0.00 <span>ر.س</span></p>
                             </div>
                         </div>
-                        <div class="d-flex  justify-content-between pt-5 ">
-                            <div class="ms-3">
-                                <p class="text-green font-size-18-px m-0 d-flex align-items-center">معلومات المورد</p>
+
+                        <div class="row2">
+                            <div class="type">
+                                <p>الرسوم الإدارية</p>
+                                <a href="#">تطبيق الشروط والأحكام</a>
                             </div>
-                            <span class="title-line flex-grow-1"></span>
-                        </div>
-                        <div class="pt-5">
-                            <div>
-                                <p>اختر من الموردين</p>
-                            </div>
-                            <div class="position-relative">
-                                <select name="supplier_id" class="form-input supplier_select "  >
-                                    <option >اختر من الموردين</option>
-                                    @foreach($suppliers as $susupplier)
-                                        <option
-                                            @if(( isset($purchase) ? $purchase->supplier_id : 0) == $susupplier->id) selected @endif
-                                        value="{{ $susupplier->id }}">
-                                            {{ $susupplier->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <div class="position-absolute select-arrow ">
-                                    <i class="fa-solid fa-chevron-down text-black-70 "  ></i>
-                                </div>
-                            </div>
-                            <div class="error error_supplier_id" >
+                            <div class="type_price">
+                                <p>0.00 <span>ر.س</span></p>
                             </div>
                         </div>
-                        <div class="card-info mt-3 p-4 supplier-card">
-                            <div>
-                                <p class="text-supplier-blue">بيانات المورد </p>
-                            </div>
-                            <div class="col-10 d-flex justify-content-between p-0">
-                                <p class="text-white-97">اسم المنشأة الموردة</p>
-                                <p class="text-white-97">اسم المسؤول</p>
-                                <p class="text-white-97">القطاع</p>
-                            </div>
-                            <div class="col-10 d-flex justify-content-between p-0 line pb-3">
-                                <p class="text-green supplier_facility">خديجة محمد</p>
-                                <p class="text-green supplier_name ">خديجة محمد</p>
-                                <p class="text-green supplier_sector">اسم القطاع</p>
-                            </div>
-                            <div class="mt-3">
-                                <p class="text-supplier-blue">بيانات التواصل</p>
-                            </div>
-                            <div class="mt-3 col-10 d-flex justify-content-between p-0 line pb-4">
-                                <div class="">
-                                    <img class="img-24-24" src="{{ asset('./assets/img/ic_sharp-phone-enabled.png') }}" alt="">
-                                    <p class="d-inline text-green font-size-14-px counct supplier_contact_info_phone">+966 7655 6666</p>
-                                </div>
-                                <div class="">
-                                    <img  class="img-24-24"  src="{{ asset('./assets/img/dashicons_email-alt.png') }}" alt="">
-                                    <p class="d-inline text-green font-size-14-px counct supplier_contact_info_email">khadija-ahmed@gmail.com</p>
-                                </div>
-                            </div>
-                            <div class="mt-3">
-                                <p class="text-supplier-blue">المرفقات</p>
-                            </div>
-                            <div class="">
-                                <img class="img-fluid ms-2 img-24-24"  src="{{ asset('./assets/img/fluent_attach-24-regular.png') }}" alt="">
-                                <a class=" text-blue font-size-14-px">شهادة الحساب البنكي للمورد.pdf</a>
-                            </div>
 
-                        </div>
-
-                        <div class="d-flex justify-content-center mt-5" >
-                            <div class="bg-green p-2 col-4 d-flex justify-content-center align-items-center" id="submit">
-                                <p class=" m-0 ms-3 text-white">التالي</p>
-                                <div class="">
-                                    <i class="fa-solid fa-chevron-down text-white d-flex justify-content-center "  ></i>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </form>
-
-
+                    </div>
 
                 </div>
+
+
+                <div class="title">
+                    <p>معلومات المورد</p>
+                    <span></span>
+                </div>
+
+                <div class="input_box">
+                    <p>اختر من الموردين</p>
+                    <div class="select_input">
+                        <select name="supplier_id" class="supplier_select ">
+                            <option>اختر من الموردين</option>
+                            @foreach($suppliers as $susupplier)
+                                <option
+                                    @if(( isset($purchase) ? $purchase->supplier_id : 0) == $susupplier->id) selected @endif
+                                value="{{ $susupplier->id }}">
+                                    {{ $susupplier->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="position-absolute select_arrow ">
+                            <i class="fa-solid fa-chevron-down  "></i>
+                        </div>
+
+                    </div>
+                    <div class="error error_supplier_id" >
+                    </div>
+                    <div class="suppler_box" >
+                        <div class="title">
+                            <p>بيانات المورد </p>
+                        </div>
+                        <div class="row2">
+                            <div class="type">
+                                <p>اسم المنشأة الموردة</p>
+                                <p>اسم المسؤول</p>
+                                <p>القطاع</p>
+                            </div>
+                            <div class="type_name">
+                                <p class="supplier_name">خديجة محمد </p>
+                                <p class="supplier_facility">خديجة محمد </p>
+                                <p class="supplier_sector">اسم القطاع </p>
+                            </div>
+                        </div>
+
+                        <div class="line" ></div>
+
+                        <div class="title">
+                            <p>بيانات التواصل </p>
+                        </div>
+
+                        <div class="row2">
+                            <div class="call_info">
+                                <div class="">
+                                    <img src="{{ asset('assets/img/ic_sharp-phone-enabled.png') }}" alt="">
+                                    <p class="supplier_contact_info_phone">+966 7655 6666</p>
+                                </div>
+                                <div class="">
+                                    <img src="{{ asset('assets/img/dashicons_email-alt.png') }}" alt="">
+                                    <p class="supplier_contact_info_email">khadija-ahmed@gmail.com</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="line" ></div>
+
+                        <div class="title">
+                            <p>المرفقات </p>
+                        </div>
+                        <div class="row2">
+                            <div class="doc_info">
+                                <div class="">
+                                    <img src="{{ asset('assets/img/fluent_attach-24-regular.png') }}" alt="">
+                                    <a href="#" class="">شهادة الحساب البنكي للمورد.pdf</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="pages">
+                    <div class="" id="submit">
+                        <p class="">التالي</p>
+                        <div class="">
+                            <i class="fa-solid fa-chevron-down "></i>
+                        </div>
+                    </div>
+
+                </div>
+
 
 
 
             </div>
+            </form>
         </div>
     </div>
 @endsection
@@ -253,9 +257,7 @@
 
     <script >
         const suppliers = {!! json_encode( $suppliers ) !!};
-        $('.supplier-card').hide();
-
-
+        $('.suppler_box').hide();
 
         $('.supplier_select').change(function () {
             var supplier_id =  $(this).val();
@@ -271,37 +273,68 @@
                 $('.supplier_contact_info_phone').text(contact_info.phone);
                 $('.supplier_contact_info_email').text(contact_info.email);
 
-                $('.supplier-card').show();
+                $('.suppler_box').show();
             }else{
-                $('.supplier-card').hide();
+                $('.suppler_box').hide();
             }
         })
 
-        $('.file-log').css("display", "none");
-        $('.singel_file').change(function () {
+
+        $('.sidebare_icon').click(function(){
+            $('.sidebare').toggle();
+        });
+        $('.dropdown').click(function(){
+            $('.user_logo .more').toggle();
+        });
+
+        window.addEventListener('resize', ()=>{
+            if (window.innerWidth <= 768 && window.innerWidth >= 760) {
+                $('.sidebare').hide();
+            }
+        });
+
+
+        document.querySelector('.sidebare',':after').addEventListener('click', function () {
+            $('.sidebare').toggle();
+        });
+
+        const getShortName = ($name)=>{
+            return $name.substr(0, 5)+'...'+$name.substr(-8);
+        }
+
+        $('.upload_single_file').change(function(){
             var file =  this.files[0];
-            var parent = $(this).parent('div').first();
-            parent.find('.file_name').text(file.name.substr(0, 5)+'...'+file.name.substr(-8))
-            parent.find('.file_size').text((file.size / 1000000).toFixed(2) +' MB' )
-            parent.find('.file-log').css("display", "flex");
-            parent.find('label').hide();
-            parent.removeClass('justify-content-end')
-                .addClass('justify-content-start')
-                .css('background-color','#FFFFFF');
+            var parent = $(this).parents('.singal_file').first().children('.uploaded_file');
+            name = getShortName(file.name);
+            size = (file.size / 1000000).toFixed(2) +' MB';
+            var singal = `
+                  <div class="input-file-log  ">
+                    <div class="">
+                      <div>
+                        <p class="font-size-10-px">${name}</p>
+                        <p class="font-size-10-px">${size}</p>
+                      </div>
+                    </div>
+                    <div class="img_box">
+                      <img src="{{ asset('assets/img/pdf.png') }}" alt="">
+                    </div>
+                    <div class="close_file">
+                      <i class="fa-solid fa-xmark remove_singel_file"></i>
+                    </div>
+                  </div>
+                  `;
+            parent.html(singal)
+            parent.css('background-color','#F4FBFA')
+            $(this).parents('.singal_file').find('label').hide()
+        })
+        $(document).on('click','.remove_singel_file',function (){
+            console.log(0)
+            var parent = $(this).parents('.singal_file').first().children('.uploaded_file');
+            parent.text('اختر الملف')
+            parent.find('input').val(null);
+            parent.css('background-color','transparent')
+            console.log(parent.parent('div').find('label').show())
         });
-        $('.remove-singel_file').click(function (){
-            var file_log = $(this).closest('.file-log');
-
-            file_log.hide();
-            file_log.parent()
-                .addClass('justify-content-end')
-                .removeClass('justify-content-start')
-                .css('background-color','#F1F1F1')
-                .find('label')
-                .show();
-            file_log.find('input').val(null);
-        });
-
 
         $(document).on('click', '#submit', function (e) {
             var formData = new FormData($('#PurchaseForm')[0]);
@@ -331,7 +364,7 @@
                     for(let err in errors){
                         if (errors.hasOwnProperty(err)) {
                             (errors[err]).forEach(message=>{
-                                $('.error_'+err).append('<small class=" d-block text-danger">'+message+'</small>')
+                                $('.error_'+err).append('<small class="input_error">'+message+'</small>')
                             })
                         }
                     }

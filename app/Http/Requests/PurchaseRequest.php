@@ -26,7 +26,7 @@ class PurchaseRequest extends FormRequest
             'amount' =>'required|integer',
             'payment_period' =>'required|integer|max:12',
             'supplier_id' => 'required|exists:suppliers,id',
-            'price' => 'required|mimes:pdf|max:10000000',
+            'price' => "required|mimes:pdf|max:10000000",
         ];
     }
 

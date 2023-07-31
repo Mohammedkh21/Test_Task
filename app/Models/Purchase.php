@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Purchase extends Model
 {
@@ -25,5 +26,9 @@ class Purchase extends Model
     public function file()
     {
         return $this->morphOne(File::class, 'fileable');
+    }
+
+    public function getFileFromPublic(){
+        return Storage::url($this->file->path);
     }
 }

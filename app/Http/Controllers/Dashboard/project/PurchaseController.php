@@ -57,9 +57,12 @@ class PurchaseController extends MainController
     public function update(PurchaseRequest $request, Project $project)
     {
         $purchase = $project->purchase;
-        Storage::disk('public')->delete($purchase->file->path);
-        $file_path = $request->file('price')->store('purchase/files','public');
-        $purchase->file()->update(['path'=>$file_path,'name'=>$request->file('price')->getClientOriginalName()]);
+        if ($request->has('price')){
+            Storage::disk('public')->delete($purchase->file->path);
+            $file_path = $request->file('price')->store('purchase/files','public');
+            $purchase->file()->update(['path'=>$file_path,'name'=>$request->file('price')->getClientOriginalName()]);
+        }
+
         $project->purchase()->update($request->except(['price','_token','_method']));
         return response()->json(['status'=>true],200);
     }

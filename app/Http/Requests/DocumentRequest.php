@@ -29,7 +29,7 @@ class DocumentRequest extends FormRequest
             'financial_statements'=>'nullable|array',
             'financial_statements.*'=>'file|mimes:pdf|max:10000000',
             'supporting_documents'=>'nullable|array',
-            'supporting_documents.*'=>'file|mimes:pdf|max:10',
+            'supporting_documents.*'=>'file|mimes:pdf|max:10000000',
 
         ];
     }
