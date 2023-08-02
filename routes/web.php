@@ -16,10 +16,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// example http://127.0.0.1:8000/coin/exchange/usd/ILS/10
+Route::get('coin/exchange/{from}/{to}/{amount}',Controllers\Dashboard\CoinExchangeController::class);
+
+
 Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function (){
-
-    Route::get('coin/exchange/{from}/{to}/{amount}',Controllers\Dashboard\CoinExchangeController::class);
-
     Route::get('projects/create',MainController::class)->name('project');
     Route::group([],function (){
         Route::singleton('projects.purchase', Controllers\Dashboard\project\PurchaseController::class)->creatable();

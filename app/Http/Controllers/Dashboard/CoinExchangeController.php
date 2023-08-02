@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Api\coin\coin;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Services\Coin\CoinExchangeService;
 
 class CoinExchangeController extends Controller
 {
-    public function __invoke($from , $to , $amount)
+    public function __invoke($from , $to , $amount , CoinExchangeService $coinExchangeService)
     {
-        return coin::exchange($from,$to) * $amount;
+        return  $coinExchangeService->exchange($from,$to) * $amount;
     }
 }
