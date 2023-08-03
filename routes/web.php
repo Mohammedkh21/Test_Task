@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::prefix('notifications')->name('notifications.')->middleware(['auth'])->group(function (){
+    Route::get('send',[Controllers\Notification\UserNotification::class,'sendPage']);
+    Route::post('send',[Controllers\Notification\UserNotification::class,'send'])->name('send');
+    Route::get('receive',[Controllers\Notification\UserNotification::class,'ReceivePage']);
+});
+
+
 
 // example http://127.0.0.1:8000/coin/exchange/usd/ILS/10
 Route::get('coin/exchange/{from}/{to}/{amount}',Controllers\Dashboard\CoinExchangeController::class);
