@@ -32,4 +32,23 @@
 
 </body>
 @yield('script')
+<script>
+    $('.sidebare_icon').click(function(){
+        $('.sidebare').toggle();
+    });
+    $('.dropdown').click(function(){
+        $('.user_logo .more').toggle();
+    });
+
+    window.addEventListener('resize', ()=>{
+        if (window.innerWidth <= 768 && window.innerWidth >= 760) {
+            $('.sidebare').hide();
+        }
+    });
+
+
+    document.querySelector('.sidebare',':after').addEventListener('click', function () {
+        $('.sidebare').toggle();
+    });
+</script>
 </html>
